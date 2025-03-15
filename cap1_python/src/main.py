@@ -62,6 +62,10 @@ def main():
             display_data(crops)
 
         elif option == "3":
+            if crops == []:
+                print("   - Nenhum insumo cadastrado.")
+                continue
+
             print("Essas são suas culturas cadastradas:")
             display_data(crops)
             identifier = input("Digite o número ou nome da cultura que deseja atualizar: ")
@@ -72,6 +76,10 @@ def main():
                 print("Cultura não encontrada.")
 
         elif option == "4":
+            if crops == []:
+                print("   - Nenhum insumo cadastrado.")
+                continue
+
             print("Essas são suas culturas cadastradas:")
             display_data(crops)
             identifier = input("Digite o número ou nome da cultura que deseja deletar: ")

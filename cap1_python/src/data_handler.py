@@ -23,7 +23,7 @@ def display_data(crops_list):
                 print(f"     - Nome: {insumo['input_name']}")
                 print(f"       Unidade: {insumo['unit']}")
                 print(f"       Quantidade por área: {insumo['quantity_per_area']} {insumo['unit']}/m²")
-                print(f"       Quantidade total necessária: {insumo['total_quantity']} {insumo['unit']}")
+                print(f"       Quantidade total necessária: {insumo['total_quantity']:.2f} {insumo['unit']}")
         else:
             print("   - Nenhum insumo cadastrado.")
 
