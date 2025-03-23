@@ -26,15 +26,21 @@ def main():
 
             crop_name = input("Informe o nome da cultura: ")
             geometry_shape = input("Forma geométrica (retângulo/quadrado/círculo): ")
-            area = calculate_area(geometry_shape)
-            rows = int(input("Quantas ruas tem a lavoura? "))
+            total_area = calculate_area(geometry_shape)
+
+            spacing = float(input("Informe o espaçamento entre linhas/sulcos (m): "))
+            rows = int(total_area / spacing)
+            groove_area = rows * spacing * 0.25
+            cultivation_area = total_area - groove_area
+
+
 
             inputs = []
             while True:
                 input_name = input("Nome do insumo/produto: ")
                 unit = input("Unidade do insumo (ex: litros, kg): ")
                 quantity_per_area = float(input(f"Quantidade do insumo por unidade de área ({unit}/m²): "))
-                total_quantity = calculate_input_quantity(area, quantity_per_area, rows)
+                total_quantity = calculate_input_quantity(cultivation_area, quantity_per_area, rows)
 
                 inputs.append({
                     "input_name": input_name,
@@ -50,7 +56,10 @@ def main():
             data_entry = {
                 "crop": crop_name,
                 "shape": geometry_shape,
-                "area": area,
+                "spacing": spacing,
+                "total_area": total_area,
+                "cultivation_area": cultivation_area,
+                "groove_area": groove_area,
                 "rows": rows,
                 "inputs": inputs
             }

@@ -12,10 +12,13 @@ def display_data(crops_list):
         return
 
     for idx, crop in enumerate(crops_list, start=1):
-        print(f"{idx}. Cultura: {crop['crop']}")
+        print(f"\n===== Cultura {idx} =====")
+        print(f"{idx}. Nome: {crop['crop'].capitalize()}")
         print(f"   - Forma geométrica: {crop['shape']}")
-        print(f"   - Área total: {crop['area']:.2f} m²")
-        print(f"   - Ruas da lavoura: {crop['rows']}")
+        print(f"   - Área total: {crop['total_area']:.2f} m²")
+        print(f"   - Área de cultivo útil: {crop['cultivation_area']:.2f} m²")
+        print(f"   - Espaçamento entre linhas/sulcos: {crop['spacing']} m")
+        print(f"   - Número de linhas/sulcos: {crop['rows']}")
 
         if crop.get("inputs"):
             print("   - Insumos:")
@@ -40,11 +43,14 @@ def update_data(crops_list, index):
 
         new_area = input("Deseja recalcular a área? (s/n): ")
         if new_area.lower() == 's':
-            crop['area'] = calculate_area(crop['shape'])
+            crop['total_area'] = calculate_area(crop['shape'])
+            crop['spacing'] = float(input("Informe o novo espaçamento entre linhas/sulcos (m): "))
+            crop['rows'] = int(crop['total_area'] / crop['spacing'])
+            crop['groove_area']= crop['rows'] * crop['spacing'] * 0.25
+            crop['cultivation_area'] = crop['total_area'] - crop['groove_area']
 
-        new_rows = input("Novo número de ruas (ou pressione Enter para manter): ")
-        if new_rows:
-            crop['rows'] = int(new_rows)
+            print(f"Nova área total: {crop['total_area']:.2f} m²")
+            print(f"Nova área de cultivo útil: {crop['cultivation_area']:.2f} m²")
 
         if crop["inputs"]:
             print("\nAtualização de insumos:")
@@ -60,8 +66,11 @@ def update_data(crops_list, index):
                 if new_quantity_per_area:
                     insumo['quantity_per_area'] = float(new_quantity_per_area)
 
-                insumo['total_quantity'] = calculate_input_quantity(crop['area'], insumo['quantity_per_area'],
-                                                                    crop['rows'])
+                insumo['total_quantity'] = calculate_input_quantity(
+                    crop['cultivation_area'],
+                    insumo['quantity_per_area'],
+                    crop['rows']
+                )
 
         print("Dados atualizados com sucesso!")
     else:
